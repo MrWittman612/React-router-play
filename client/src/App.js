@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import "./App.css";
 
 const topics = [
@@ -61,9 +62,48 @@ const topics = [
     ]
   }
 ];
+const Topics = () => {
+  return (
+    <div>
+      <h1>Topics</h1>
+      <ul>
+        {topics.map(({ name, id }) => (
+          <li key={id}>
+            <Link to={`/topics/${id}`}>{name}</Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+const Home = () => {
+  return <h1>Home</h1>;
+};
 
 function App() {
-  return <div className="App"></div>;
+  return (
+    <Router>
+      <div style={{ width: "100%", margin: "0 auto", padding: "1.5rem" }}>
+        <ul style={{ marginLeft: "10px" }}>
+          <li
+            style={{
+              backgroundColor: "white",
+              display: "inline-block",
+              textDecoration: "line"
+            }}
+          >
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/topics">Topics</Link>
+          </li>
+        </ul>
+        <Route exact path="/" component={Home} />
+        <Route path="/Topics" component={Topics} />
+      </div>
+    </Router>
+  );
 }
 
 export default App;
