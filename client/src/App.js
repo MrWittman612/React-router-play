@@ -62,6 +62,17 @@ const topics = [
     ]
   }
 ];
+
+const Topic = ({ match }) => {
+  const topic = topics.find(({ id }) => id === match.params.topicId);
+  return (
+    <div>
+      <h2>{topic.name}</h2>
+      <p>{topic.description}</p>
+    </div>
+  );
+};
+
 const Topics = () => {
   return (
     <div>
@@ -73,6 +84,7 @@ const Topics = () => {
           </li>
         ))}
       </ul>
+      <Route path={`/topics/:topicId`} component={Topic} />
     </div>
   );
 };
