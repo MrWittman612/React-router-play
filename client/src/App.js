@@ -63,28 +63,58 @@ const topics = [
   }
 ];
 
+const Resource = ({ match }) => {
+  const topic = topics
+    .find(({ id }) => id === match.params.topicId)
+    .resources.find(({ id }) => id === match.params.subId);
+  console.log(topic.name);
+  return (
+    <div>
+      <h3>{topic.name}</h3>
+      <p>{topic.description}</p>
+      <a href={topic.url} target="_blank" rel="noopener noreferrer">
+        Learn more
+      </a>
+    </div>
+  );
+};
+
 const Topic = ({ match }) => {
   const topic = topics.find(({ id }) => id === match.params.topicId);
   return (
     <div>
       <h2>{topic.name}</h2>
       <p>{topic.description}</p>
+      <ul>
+        {topic.resources.map(sub => (
+          <li key={sub.id}>
+            {/* <Link to={`/topics/${match.params.topicId}/${sub.id}`}> */}
+            <Link to={`${match.url}/${sub.id}`}>{sub.name}</Link>
+          </li>
+        ))}
+      </ul>
+      <hr />
+      {/* <Route path={`/topics/:topicId/:subId`} component={Resource} /> */}
+      <Route path={`${match.path}/:subId`} component={Resource} />
     </div>
   );
 };
 
-const Topics = () => {
+const Topics = ({ match }) => {
   return (
     <div>
       <h1>Topics</h1>
       <ul>
         {topics.map(({ name, id }) => (
           <li key={id}>
-            <Link to={`/topics/${id}`}>{name}</Link>
+            {/* <Link to={`/topics/${id}`}>{name}</Link> */}
+            <Link to={`${match.url}/${id}`}>{name}</Link>
           </li>
         ))}
       </ul>
-      <Route path={`/topics/:topicId`} component={Topic} />
+      <hr />
+      {/* <Route path={`/topics/:topicId`} component={Topic} /> */}
+      <Route path={`${match.path}/:topicId`} component={Topic} />
     </div>
   );
 };
@@ -111,6 +141,7 @@ function App() {
             <Link to="/topics">Topics</Link>
           </li>
         </ul>
+        <hr />
         <Route exact path="/" component={Home} />
         <Route path="/Topics" component={Topics} />
       </div>
