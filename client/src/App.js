@@ -1,6 +1,8 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import "./App.css";
+// import Home from "./Home";
+// import Topics from "./Topics";
 
 const topics = [
   {
@@ -18,7 +20,7 @@ const topics = [
         name: "Programmatically navigate",
         id: "programmatically-navigate",
         description: "When building an app with React",
-        url: "https://reacttraining.com/react-router/web/example/no-match"
+        url: "https://www.youtube.com/watch?v=sfvrjwVihFY"
       }
     ]
   },
@@ -67,7 +69,7 @@ const Resource = ({ match }) => {
   const topic = topics
     .find(({ id }) => id === match.params.topicId)
     .resources.find(({ id }) => id === match.params.subId);
-  console.log(topic.name);
+  // console.log(topic.url);
   return (
     <div>
       <h3>{topic.name}</h3>
@@ -123,6 +125,16 @@ const Home = () => {
   return <h1>Home</h1>;
 };
 
+const NoMatch = ({ location }) => {
+  return (
+    <div>
+      <h3>
+        No match for <code>{location.pathname}</code>
+      </h3>
+    </div>
+  );
+};
+
 function App() {
   return (
     <Router>
@@ -140,10 +152,16 @@ function App() {
           <li>
             <Link to="/topics">Topics</Link>
           </li>
+          <li>
+            <Link to="/about">About</Link>
+          </li>
         </ul>
         <hr />
-        <Route exact path="/" component={Home} />
-        <Route path="/Topics" component={Topics} />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/Topics" component={Topics} />
+          <Route component={NoMatch} />
+        </Switch>
       </div>
     </Router>
   );
